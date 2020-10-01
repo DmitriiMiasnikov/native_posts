@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Text, StyleSheet, Platform } from 'react-native'
 import { AppLoading } from 'expo';
 import { bootstrap } from './src/bootstrap';
@@ -12,21 +12,30 @@ import { AppHeaderIcon } from './src/components/AppHeaderIcon';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
-const Tab = createBottomTabNavigator();
+const Tab = Platform.OS === 'android' ? createMaterialBottomTabNavigator() : createBottomTabNavigator();
 const Tabs = () => {
-  const stylesMainPage = ({ route }) => ({
+  const MainStyles = () => ({
     headerShown: false,
-    tabBarLabel: route.name === 'Main' ? 'Главная' : 'Избранное',
+    tabBarLabel: 'Главная',
     tabBarIcon: ({ focused, color, size }) => {
-      return <Ionicons name={route.name === 'Main' ? 'ios-albums' : 'ios-star'} size={25} color={color} />
+      return <Ionicons name={'ios-albums'} size={25} color={color} />
+    },
+  })
+  const BookedStyles = () => ({
+    headerShown: false,
+    tabBarLabel: 'Избранное',
+    tabBarIcon: ({ focused, color, size }) => {
+      return <Ionicons name={'ios-star'} size={25} color={color} />
     },
   })
   return (
-    <Tab.Navigator screenOptions={stylesMainPage}
-      tabBarOptions={{ activeTintColor: THEME.MAIN_COLOR, inactiveTintColor: 'grey' }}>
-      <Tab.Screen name='Main' component={MainScreen}/>
-      <Tab.Screen name='Booked' component={BookedScreen} />
+    <Tab.Navigator
+      tabBarOptions={{ activeTintColor: THEME.MAIN_COLOR, inactiveTintColor: 'grey', 
+        activeBackgroundColor: Platform.OS === 'android' ? 'white' : THEME.MAIN_COLOR }}>
+      <Tab.Screen name='Main' component={MainScreen} options={MainStyles} />
+      <Tab.Screen name='Booked' component={BookedScreen} options={BookedStyles} />
     </Tab.Navigator>
   )
 }
@@ -69,7 +78,7 @@ export default function App() {
   }
   return <NavigationContainer>
     <Stack.Navigator>
-      <Stack.Screen name='Tab' component={Tabs} options={stylesMainPage}/>
+      <Tab.Screen name='Tab' component={Tabs} options={stylesMainPage} />
       <Stack.Screen name='Main' component={MainScreen} options={stylesMainPage} />
       <Stack.Screen name='Post' component={PostScreen} options={stylesPostPage} />
     </Stack.Navigator>
