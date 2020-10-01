@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Image, Button, Dimensions, ScrollView, Alert } from 'react-native';
 import { DATA } from '../data';
 import { THEME } from '../theme';
 
-export const PostScreen = ({ route }) => {
+export const PostScreen = ({ route, navigation }) => {
     const removeHandler = () => {
         Alert.alert(
             "Удаление поста",
@@ -20,6 +20,9 @@ export const PostScreen = ({ route }) => {
     }
     const postId = route.params?.postId
     const post = DATA.find(el => el.id === postId)
+    // useEffect(() => {
+    //     navigation.setParams({ booked: post.booked })
+    // }, [])
     return (
         <ScrollView style={styles.center}>
             <Image source={{ uri: post.img }} style={styles.image} />

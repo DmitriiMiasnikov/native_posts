@@ -5,7 +5,7 @@ import { Post } from './../../src/components/Post';
 
 export const MainScreen = ({ navigation }) => {
     const openPostHandler = (post) => {
-        navigation.navigate('Post', { postId: post.id, date: post.date })
+        navigation.navigate('Post', { postId: post.id, date: post.date, booked: post.booked })
     }
     return (
         <View style={styles.wrapper}>
