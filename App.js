@@ -12,7 +12,7 @@ import { AppHeaderIcon } from './src/components/AppHeaderIcon';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
-import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
 const Tab = Platform.OS === 'android' ? createMaterialBottomTabNavigator() : createBottomTabNavigator();
 const Tabs = () => {
@@ -31,9 +31,9 @@ const Tabs = () => {
     },
   })
   return (
-    <Tab.Navigator
-      tabBarOptions={{ activeTintColor: THEME.MAIN_COLOR, inactiveTintColor: 'grey', 
-        activeBackgroundColor: Platform.OS === 'android' ? 'white' : THEME.MAIN_COLOR }}>
+    <Tab.Navigator shifting={true}
+      tabBarOptions={{ activeTintColor: THEME.MAIN_COLOR, inactiveTintColor: 'grey',
+        activeBackgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : 'white' }}>
       <Tab.Screen name='Main' component={MainScreen} options={MainStyles} />
       <Tab.Screen name='Booked' component={BookedScreen} options={BookedStyles} />
     </Tab.Navigator>
