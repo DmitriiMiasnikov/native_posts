@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet, FlatList } from 'react-native';
 import { DATA } from '../data';
 import { Post } from './../../src/components/Post';

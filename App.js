@@ -17,27 +17,27 @@ const Tab = createBottomTabNavigator();
 const Tabs = () => {
   const stylesMainPage = ({ route }) => ({
     headerShown: false,
-    tabBarName: 'Main',
+    tabBarLabel: route.name === 'Main' ? 'Главная' : 'Избранное',
     tabBarIcon: ({ focused, color, size }) => {
-      return <Ionicons name={route.name === 'Main' ? 'ios-albums' : 'ios-menu'} size={25} color={color}/>
+      return <Ionicons name={route.name === 'Main' ? 'ios-albums' : 'ios-star'} size={25} color={color} />
     },
   })
   return (
-    <Tab.Navigator screenOptions={stylesMainPage} 
-      tabBarOptions={{activeTintColor: THEME.MAIN_COLOR, inactiveTintColor: 'grey' }}>
+    <Tab.Navigator screenOptions={stylesMainPage}
+      tabBarOptions={{ activeTintColor: THEME.MAIN_COLOR, inactiveTintColor: 'grey' }}>
       <Tab.Screen name='Main' component={MainScreen}/>
-      <Tab.Screen name='Booked' component={BookedScreen}/>
+      <Tab.Screen name='Booked' component={BookedScreen} />
     </Tab.Navigator>
   )
 }
 
 const Stack = createStackNavigator();
 export default function App() {
-  const stylesMainPage = {
+  const stylesMainPage = () => ({
     headerTitle: (
       <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
         <Item title={'Take photo'} iconName={'ios-menu'} onPress={() => console.log('press photo')} />
-        <Text style={styles.title}>Main page</Text>
+        <Text style={styles.title}>Главная</Text>
       </HeaderButtons>
     ),
     headerRight: () => (
@@ -49,7 +49,7 @@ export default function App() {
       backgroundColor: THEME.MAIN_COLOR
     },
     headerTintColor: '#fff'
-  }
+  })
   const stylesPostPage = ({ route }) => ({
     headerTitle: `Пост от ${new Date(route.params.date).toLocaleDateString()}`,
     headerRight: () => (
