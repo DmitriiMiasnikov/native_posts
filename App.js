@@ -6,13 +6,29 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { MainScreen } from './src/screens/MainScreen';
 import { PostScreen } from './src/screens/PostScreen';
 import { BookedScreen } from './src/screens/BookedScreen';
-import { NavigationContainer } from '@react-navigation/native';
+import { AboutScreen } from './src/screens/AboutScreen';
+import { CreateScreen } from './src/screens/CreateScreen';
+import { DrawerActions, NavigationContainer } from '@react-navigation/native';
 import { THEME } from './src/theme';
 import { AppHeaderIcon } from './src/components/AppHeaderIcon';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+
+const Drawer = createDrawerNavigator();
+
+const Drawers = ({}) => {
+  return (
+    <Drawer.Navigator>
+      <Drawer.Screen name='Main' component={MainScreen} />
+      <Drawer.Screen name='About' component={AboutScreen} />
+      <Drawer.Screen name='Create' component={CreateScreen} />
+    </Drawer.Navigator>
+  )
+}
 
 const Tab = Platform.OS === 'android' ? createMaterialBottomTabNavigator() : createBottomTabNavigator();
 const Tabs = () => {
@@ -32,8 +48,10 @@ const Tabs = () => {
   })
   return (
     <Tab.Navigator shifting={true}
-      tabBarOptions={{ activeTintColor: THEME.MAIN_COLOR, inactiveTintColor: 'grey',
-        activeBackgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : 'white' }}>
+      tabBarOptions={{
+        activeTintColor: THEME.MAIN_COLOR, inactiveTintColor: 'grey',
+        activeBackgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : 'white'
+      }}>
       <Tab.Screen name='Main' component={MainScreen} options={MainStyles} />
       <Tab.Screen name='Booked' component={BookedScreen} options={BookedStyles} />
     </Tab.Navigator>
@@ -42,10 +60,10 @@ const Tabs = () => {
 
 const Stack = createStackNavigator();
 export default function App() {
-  const stylesMainPage = () => ({
+  const stylesMainPage = ({ navigation }) => ({
     headerTitle: (
       <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-        <Item title={'Take photo'} iconName={'ios-menu'} onPress={() => console.log('press photo')} />
+        <Item title={'Take photo'} iconName={'ios-menu'} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())} />
         <Text style={styles.title}>Главная</Text>
       </HeaderButtons>
     ),
@@ -78,7 +96,8 @@ export default function App() {
   }
   return <NavigationContainer>
     <Stack.Navigator>
-      <Tab.Screen name='Tab' component={Tabs} options={stylesMainPage} />
+      <Stack.Screen name='Drawers' component={Drawers} options={stylesMainPage} />
+      <Stack.Screen name='Tabs' component={Tabs} options={stylesMainPage} />
       <Stack.Screen name='Main' component={MainScreen} options={stylesMainPage} />
       <Stack.Screen name='Post' component={PostScreen} options={stylesPostPage} />
     </Stack.Navigator>
