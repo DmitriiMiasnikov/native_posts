@@ -8,7 +8,7 @@ import { PostScreen } from './src/screens/PostScreen';
 import { BookedScreen } from './src/screens/BookedScreen';
 import { AboutScreen } from './src/screens/AboutScreen';
 import { CreateScreen } from './src/screens/CreateScreen';
-import { DrawerActions, NavigationContainer, useRoute } from '@react-navigation/native';
+import { DrawerActions, getFocusedRouteNameFromRoute, NavigationContainer, useRoute } from '@react-navigation/native';
 import { THEME } from './src/theme';
 import { AppHeaderIcon } from './src/components/AppHeaderIcon';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
@@ -17,6 +17,19 @@ import { Ionicons } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
+const getTitle = (route) => {
+  const routeName = getFocusedRouteNameFromRoute(route) ?? 'Main';
+  switch (routeName) {
+    case 'Main':
+      return 'Главная';
+    case 'Booked':
+      return 'Избранное';
+    case 'Create':
+      return 'Создать пост';
+    case 'About':
+      return 'О приложении';
+  }
+}
 
 const Drawer = createDrawerNavigator();
 
@@ -38,7 +51,7 @@ const Drawers = () => {
       activeTintColor: THEME.MAIN_COLOR, inactiveTintColor: 'grey',
       activeBackgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : 'white',
     }}>
-      <Drawer.Screen name='Tabs Posts' component={Tabs} options={tabPostStyles} />
+      <Drawer.Screen name='Main' component={Tabs} options={tabPostStyles} />
       <Drawer.Screen name='About' component={AboutScreen} options={aboutStyles} />
       <Drawer.Screen name='Create' component={CreateScreen} options={createStyles} />
     </Drawer.Navigator>
@@ -48,14 +61,12 @@ const Drawers = () => {
 const Tab = Platform.OS === 'android' ? createMaterialBottomTabNavigator() : createBottomTabNavigator();
 const Tabs = () => {
   const MainStyles = () => ({
-    headerShown: false,
     tabBarLabel: 'Главная',
     tabBarIcon: ({ focused, color, size }) => {
       return <Ionicons name={'ios-albums'} size={25} color={color} />
     },
   })
   const BookedStyles = () => ({
-    headerShown: false,
     tabBarLabel: 'Избранное',
     tabBarIcon: ({ focused, color, size }) => {
       return <Ionicons name={'ios-star'} size={25} color={color} />
@@ -75,11 +86,11 @@ const Tabs = () => {
 
 const Stack = createStackNavigator();
 export default function App() {
-  const stylesMainPage = ({ navigation }) => ({
+  const stylesMainPage = ({ navigation, route }) => ({
     headerTitle: (
       <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
         <Item title={'Take photo'} iconName={'ios-menu'} onPress={() => navigation.dispatch(DrawerActions.toggleDrawer())} />
-        <Text style={styles.title}>Главная</Text>
+        <Text style={styles.title}>{getTitle(route)}</Text>
       </HeaderButtons>
     ),
     headerRight: () => (
@@ -114,6 +125,7 @@ export default function App() {
       <Stack.Screen name='Drawers' component={Drawers} options={stylesMainPage} />
       <Stack.Screen name='Tabs' component={Tabs} options={stylesMainPage} />
       <Stack.Screen name='Main' component={MainScreen} options={stylesMainPage} />
+      <Stack.Screen name='Booked' component={BookedScreen} options={stylesMainPage} />
       <Stack.Screen name='Post' component={PostScreen} options={stylesPostPage} />
     </Stack.Navigator>
   </NavigationContainer>
