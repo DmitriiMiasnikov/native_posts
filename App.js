@@ -8,7 +8,7 @@ import { PostScreen } from './src/screens/PostScreen';
 import { BookedScreen } from './src/screens/BookedScreen';
 import { AboutScreen } from './src/screens/AboutScreen';
 import { CreateScreen } from './src/screens/CreateScreen';
-import { DrawerActions, NavigationContainer } from '@react-navigation/native';
+import { DrawerActions, NavigationContainer, useRoute } from '@react-navigation/native';
 import { THEME } from './src/theme';
 import { AppHeaderIcon } from './src/components/AppHeaderIcon';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
@@ -21,11 +21,26 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 const Drawer = createDrawerNavigator();
 
 const Drawers = () => {
+  const tabPostStyles = ({
+    title: 'Главная страница',
+    drawerIcon: ({ focused, color, size }) => {
+      return <Ionicons name={'ios-star'} size={25} color={color} />
+    },
+  })
+  const aboutStyles = ({
+    title: 'О приложении'
+  })
+  const createStyles = ({
+    title: 'Создать пост'
+  })
   return (
-    <Drawer.Navigator>
-      <Drawer.Screen name='Tabs Posts' component={Tabs} />
-      <Drawer.Screen name='About' component={AboutScreen} />
-      <Drawer.Screen name='Create' component={CreateScreen} />
+    <Drawer.Navigator drawerOptions={{
+      activeTintColor: THEME.MAIN_COLOR, inactiveTintColor: 'grey',
+      activeBackgroundColor: Platform.OS === 'android' ? THEME.MAIN_COLOR : 'white',
+    }}>
+      <Drawer.Screen name='Tabs Posts' component={Tabs} options={tabPostStyles} />
+      <Drawer.Screen name='About' component={AboutScreen} options={aboutStyles} />
+      <Drawer.Screen name='Create' component={CreateScreen} options={createStyles} />
     </Drawer.Navigator>
   )
 }
