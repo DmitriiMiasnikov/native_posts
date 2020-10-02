@@ -20,10 +20,10 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const Drawer = createDrawerNavigator();
 
-const Drawers = ({}) => {
+const Drawers = () => {
   return (
     <Drawer.Navigator>
-      <Drawer.Screen name='Main' component={MainScreen} />
+      <Drawer.Screen name='Tabs Posts' component={Tabs} />
       <Drawer.Screen name='About' component={AboutScreen} />
       <Drawer.Screen name='Create' component={CreateScreen} />
     </Drawer.Navigator>
