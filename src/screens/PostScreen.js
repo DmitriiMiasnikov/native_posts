@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { View, Text, StyleSheet, Image, Button, Dimensions, ScrollView, Alert } from 'react-native';
 import { DATA } from '../data';
 import { THEME } from '../theme';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleBooked } from '../store/actions/postActions';
 
 export const PostScreen = ({ route, navigation }) => {
     const removeHandler = () => {
@@ -20,6 +22,21 @@ export const PostScreen = ({ route, navigation }) => {
     }
     const postId = route.params?.postId
     const post = DATA.find(el => el.id === postId)
+
+    const dispatch = useDispatch();
+    const booked = useSelector(state => state.post.bookedPosts.some(el => el.id === postId))
+
+    useEffect(() => {
+        navigation.setParams({ booked })
+    }, [booked])
+
+    const toggleHandler = useCallback(() => {
+        dispatch(toggleBooked(postId))
+    }, [dispatch, postId])
+    useEffect(() => {
+        navigation.setParams({ toggleHandler })
+    }, [toggleHandler])
+
     return (
         <ScrollView style={styles.center}>
             <Image source={{ uri: post.img }} style={styles.image} />

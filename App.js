@@ -110,7 +110,9 @@ export default function App() {
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
         <Item title={'Take photo'} iconName={route.params.booked ? 'ios-star' : 'ios-star-outline'}
-          onPress={() => console.log('press photo')} />
+          onPress={() => {
+            console.log(route)
+            route.params.toggleHandler }} />
       </HeaderButtons>
     ),
     headerStyle: {
