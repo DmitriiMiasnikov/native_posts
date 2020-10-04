@@ -16,6 +16,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Ionicons } from '@expo/vector-icons';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
+import { Provider } from 'react-redux';
+import store from './src/store/index'
 
 const getTitle = (route) => {
   const routeName = getFocusedRouteNameFromRoute(route) ?? 'Main';
@@ -120,15 +122,17 @@ export default function App() {
   if (isReady) {
     return <AppLoading startAsync={bootstrap} onFinish={() => setIsReady(true)} onError={(err) => console.log(err)} />
   }
-  return <NavigationContainer>
-    <Stack.Navigator>
-      <Stack.Screen name='Drawers' component={Drawers} options={stylesMainPage} />
-      <Stack.Screen name='Tabs' component={Tabs} options={stylesMainPage} />
-      <Stack.Screen name='Main' component={MainScreen} options={stylesMainPage} />
-      <Stack.Screen name='Booked' component={BookedScreen} options={stylesMainPage} />
-      <Stack.Screen name='Post' component={PostScreen} options={stylesPostPage} />
-    </Stack.Navigator>
-  </NavigationContainer>
+  return <Provider store={store}>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name='Drawers' component={Drawers} options={stylesMainPage} />
+        <Stack.Screen name='Tabs' component={Tabs} />
+        <Stack.Screen name='Main' component={MainScreen} />
+        <Stack.Screen name='Booked' component={BookedScreen} />
+        <Stack.Screen name='Post' component={PostScreen} options={stylesPostPage} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  </Provider>
 }
 
 const styles = StyleSheet.create({
