@@ -97,7 +97,7 @@ export default function App() {
     ),
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
-        <Item title={'Take photo'} iconName={'ios-camera'} onPress={() => console.log('press photo')} />
+        <Item title={'Take photo'} iconName={'ios-camera'} onPress={() => navigation.navigate('Create')} />
       </HeaderButtons>
     ),
     headerStyle: {

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TextInput, Button, ScrollView, TouchableWithout
 import { THEME } from '../theme';
 import {useDispatch} from 'react-redux';
 import {addPost} from './../store/actions/postActions'
+import { PhotoPicker } from '../components/PhotoPicker';
 
 export const CreateScreen = ({navigation}) => {
     const [text, setText] = useState('');
@@ -28,6 +29,7 @@ export const CreateScreen = ({navigation}) => {
             </Text>
             <TextInput style={styles.textArea} placeholder={'Введите текст'} 
                 value={text} onChangeText={setText} multiline/>
+            <PhotoPicker />
             <Button title={'Создать пост'} color={THEME.MAIN_COLOR} onPress={createPostHandler}/>
         </View>
             </TouchableWithoutFeedback>

@@ -30,7 +30,9 @@
     "react-navigation": "^4.4.1",
     "react-navigation-header-buttons": "^5.0.2",
     "react-redux": "^7.2.1",
-    "redux": "^4.0.5"
+    "redux": "^4.0.5",
+    "expo-image-picker": "~9.1.0",
+    "expo-constants": "~9.2.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0"
