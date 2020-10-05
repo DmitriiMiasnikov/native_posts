@@ -110,9 +110,7 @@ export default function App() {
     headerRight: () => (
       <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
         <Item title={'Take photo'} iconName={route.params.booked ? 'ios-star' : 'ios-star-outline'}
-          onPress={() => {
-            console.log(route)
-            route.params.toggleHandler }} />
+          onPress={() => route.params.toggleHandler} />
       </HeaderButtons>
     ),
     headerStyle: {
@@ -129,7 +127,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name='Drawers' component={Drawers} options={stylesMainPage} />
         <Stack.Screen name='Tabs' component={Tabs} />
-        <Stack.Screen name='Main' component={MainScreen} />
+        <Stack.Screen name='Main' component={MainScreen} options={stylesMainPage}/>
         <Stack.Screen name='Booked' component={BookedScreen} />
         <Stack.Screen name='Post' component={PostScreen} options={stylesPostPage} />
       </Stack.Navigator>

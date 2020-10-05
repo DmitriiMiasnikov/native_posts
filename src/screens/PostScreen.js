@@ -1,9 +1,9 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useCallback, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, Image, Button, Dimensions, ScrollView, Alert } from 'react-native';
-import { DATA } from '../data';
 import { THEME } from '../theme';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleBooked } from '../store/actions/postActions';
+import { removePost, toggleBooked } from '../store/actions/postActions';
+import { CommonActions } from '@react-navigation/native';
 
 export const PostScreen = ({ route, navigation }) => {
     const removeHandler = () => {
@@ -15,13 +15,16 @@ export const PostScreen = ({ route, navigation }) => {
                     text: "Отменить",
                     style: "cancel"
                 },
-                { text: "Удалить", style: 'destructive', onPress: () => console.log("OK Pressed") }
+                { text: "Удалить", style: 'destructive', onPress: () => {
+                    navigation.dispatch(CommonActions.navigate('Main'));
+                    dispatch(removePost(postId))
+                } }
             ],
             { cancelable: false }
         );
     }
     const postId = route.params?.postId
-    const post = DATA.find(el => el.id === postId)
+    const post = useSelector(state => state.post.allPosts.find(el => el.id === postId))
 
     const dispatch = useDispatch();
     const booked = useSelector(state => state.post.bookedPosts.some(el => el.id === postId))
@@ -31,10 +34,12 @@ export const PostScreen = ({ route, navigation }) => {
     }, [booked])
 
     const toggleHandler = useCallback(() => {
+        console.log('sdfsdf')
         dispatch(toggleBooked(postId))
     }, [dispatch, postId])
-    useEffect(() => {
-        navigation.setParams({ toggleHandler })
+
+    useLayoutEffect(() => {
+        navigation.setOptions({ toggleHandler })
     }, [toggleHandler])
 
     return (
