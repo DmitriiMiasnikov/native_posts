@@ -13,7 +13,7 @@ async function askPermision() {
         }
 }
 
-export const PhotoPicker = ({ }) => {
+export const PhotoPicker = ({ onPick }) => {
     const [image, setImage] = useState(null);
 
 
@@ -27,12 +27,13 @@ export const PhotoPicker = ({ }) => {
             allowsEditing: false,
             aspect: [16, 9]
         })
-        console.log(img)
+        setImage(img.uri)
+        onPick(img.uri)
     }
     return (
         <View>
             <Button title='Сделать фото' onPress={takePhoto} />
-            {image ? <Image style={styles.image} cource={{ uri: image }} /> : null}
+            {image ? <Image style={styles.image} source={{ uri: image }} /> : null}
         </View>
     )
 }

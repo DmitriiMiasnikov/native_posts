@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import { View, Text, StyleSheet, TextInput, Button, ScrollView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { THEME } from '../theme';
 import {useDispatch} from 'react-redux';
@@ -7,18 +7,21 @@ import { PhotoPicker } from '../components/PhotoPicker';
 
 export const CreateScreen = ({navigation}) => {
     const [text, setText] = useState('');
-    const img = 'https://static.coindesk.com/wp-content/uploads/2019/01/shutterstock_1012724596-860x430.jpg'
+    const imgRef = useRef();
     const dispatch = useDispatch()
     const createPostHandler = () => {
         const post = {
             date: new Date().toJSON(),
             text,
-            img,
+            img: imgRef.current,
             booked: false
         }
         dispatch(addPost(post))
         setText('')
         navigation.navigate('Main')
+    }
+    const photoPickHandler = (uri) => {
+        imgRef.current = uri
     }
     return (
         <ScrollView>
@@ -29,8 +32,9 @@ export const CreateScreen = ({navigation}) => {
             </Text>
             <TextInput style={styles.textArea} placeholder={'Введите текст'} 
                 value={text} onChangeText={setText} multiline/>
-            <PhotoPicker />
-            <Button title={'Создать пост'} color={THEME.MAIN_COLOR} onPress={createPostHandler}/>
+            <PhotoPicker onPick={photoPickHandler}/>
+            <Button title={'Создать пост'} color={THEME.MAIN_COLOR} 
+                onPress={createPostHandler} disabled={!text}/>
         </View>
             </TouchableWithoutFeedback>
 
