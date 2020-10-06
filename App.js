@@ -119,7 +119,7 @@ export default function App() {
     headerTintColor: '#fff'
   })
   const [isReady, setIsReady] = useState(false)
-  if (isReady) {
+  if (!isReady) {
     return <AppLoading startAsync={bootstrap} onFinish={() => setIsReady(true)} onError={(err) => console.log(err)} />
   }
   return <Provider store={store}>
