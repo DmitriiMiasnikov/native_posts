@@ -34,8 +34,7 @@ export const PostScreen = ({ route, navigation }) => {
     }, [booked])
 
     const toggleHandler = useCallback(() => {
-        console.log('sdfsdf')
-        dispatch(toggleBooked(postId))
+        dispatch(toggleBooked(post))
     }, [dispatch, postId])
 
     useLayoutEffect(() => {
