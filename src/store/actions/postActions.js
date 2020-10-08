@@ -14,8 +14,9 @@ export const loadPosts = () => {
     }
 }
 export const toggleBooked = (post) => async dispatch => {
-    await http.patch(`https://native-posts.firebaseio.com/posts/${post.id}.json`)
-    dispatch({ type: TOGGLE_BOOKED, payload: post.id })
+    let booked = !post.booked;
+    await http.patch(`https://native-posts.firebaseio.com/posts/${id}.json`, { booked })
+    dispatch({ type: TOGGLE_BOOKED, payload: id })
 }
 export const removePost = (id) => async dispatch => {
     await http.delete(`https://native-posts.firebaseio.com/posts/${id}.json`, { id })

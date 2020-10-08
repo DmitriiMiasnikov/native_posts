@@ -88,6 +88,7 @@ const Tabs = () => {
 
 const Stack = createStackNavigator();
 export default function App() {
+  // const dispatch = useDispatch()
   const stylesMainPage = ({ navigation, route }) => ({
     headerTitle: (
       <HeaderButtons HeaderButtonComponent={AppHeaderIcon}>
