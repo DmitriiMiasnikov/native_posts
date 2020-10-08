@@ -16,7 +16,7 @@ export const PostScreen = ({ route, navigation }) => {
                     style: "cancel"
                 },
                 { text: "Удалить", style: 'destructive', onPress: () => {
-                    navigation.dispatch(CommonActions.navigate('Main'));
+                    navigation.dispatch(CommonActions.goBack());
                     dispatch(removePost(postId))
                 } }
             ],
@@ -40,7 +40,9 @@ export const PostScreen = ({ route, navigation }) => {
     useLayoutEffect(() => {
         navigation.setOptions({ toggleHandler })
     }, [toggleHandler])
-
+    if (!post) {
+        return <View></View>
+    }
     return (
         <ScrollView style={styles.center}>
             <Image source={{ uri: post.img }} style={styles.image} />

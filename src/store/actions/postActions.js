@@ -1,36 +1,34 @@
-import { DB } from '../../db';
 import * as FileSystem from 'expo-file-system';
 import { ADD_POST, LOAD_POSTS, REMOVE_POST, TOGGLE_BOOKED } from './../types';
+import { http } from './../../http'
 
 export const loadPosts = () => {
     return async dispatch => {
-        const posts = await DB.getPosts()
-        dispatch({
-            type: LOAD_POSTS, payload: posts
-        })
+        try {
+            const data = await http.get('https://native-posts.firebaseio.com/posts.json')
+            const posts = data ? Object.keys(data).map(el => ({ ...data[el], id: el })) : []
+            dispatch({ type: LOAD_POSTS, payload: posts })
+        } catch (e) {
+            console.log('err', e)
+        }
     }
 }
 export const toggleBooked = (post) => async dispatch => {
-    await DB.updatePost(post)
-    dispatch ({ type: TOGGLE_BOOKED, payload: post.id })
+    await http.patch(`https://native-posts.firebaseio.com/posts/${post.id}.json`)
+    dispatch({ type: TOGGLE_BOOKED, payload: post.id })
 }
 export const removePost = (id) => async dispatch => {
-    await DB.removePost(id)
-    dispatch ({ type: REMOVE_POST, payload: id })
+    await http.delete(`https://native-posts.firebaseio.com/posts/${id}.json`, { id })
+    dispatch({ type: REMOVE_POST, payload: id })
 }
 export const addPost = (post) => async dispatch => {
-    const fileName = post.img.split('/').pop()
-    const newPath = FileSystem.documentDirectory + fileName
-    try {
-        FileSystem.moveAsync({
-            to: newPath,
-            from: post.img
-        })
-    } catch (e) {
-        console.log('err', e)
-    }
-    const payload = { ...post, img: newPath }
-    const id = await DB.createPost(payload)
-    payload.id = id
+    let img;
+    if (post.img) {
+        const fileName = post.img.split('/').pop()
+        img = FileSystem.documentDirectory + fileName
+    } else img = 'https://ichip.ru/images/cache/2019/8/15/fit_930_519_false_crop_960_576_0_0_q90_2382_1af3dc5863.jpeg'
+    const payload = { ...post, img }
+    const data = await http.post(`https://native-posts.firebaseio.com/posts.json`, payload)
+    payload.id = data.name
     dispatch({ type: ADD_POST, payload })
 }

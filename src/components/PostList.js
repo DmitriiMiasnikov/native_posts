@@ -10,7 +10,6 @@ export const PostList = ({ data, onOpen }) => {
             </Text>
         </View>
     }
-
     return (
         <View style={styles.wrapper}>
             <FlatList data={data} keyExtractor={post => post.id.toString()}

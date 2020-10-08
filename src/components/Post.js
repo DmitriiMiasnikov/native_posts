@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, ImageBackground, Text, TouchableOpacity } from 'react-native';
 
-export const Post = ({ post, onOpen }) => {
+export const Post = ({ post, onOpen, navigation }) => {
     return (
         <TouchableOpacity activeOpacity={.7} onPress={() => onOpen(post)}>
             <View style={styles.post}>

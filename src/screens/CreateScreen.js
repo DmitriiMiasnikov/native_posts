@@ -1,11 +1,11 @@
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, StyleSheet, TextInput, Button, ScrollView, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { THEME } from '../theme';
-import {useDispatch} from 'react-redux';
-import {addPost} from './../store/actions/postActions'
+import { useDispatch } from 'react-redux';
+import { addPost } from './../store/actions/postActions'
 import { PhotoPicker } from '../components/PhotoPicker';
 
-export const CreateScreen = ({navigation}) => {
+export const CreateScreen = ({ navigation }) => {
     const [text, setText] = useState('');
     const imgRef = useRef();
     const dispatch = useDispatch()
@@ -26,16 +26,19 @@ export const CreateScreen = ({navigation}) => {
     return (
         <ScrollView>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <View style={styles.wrapper}>
-            <Text style={styles.title}>
-                Создай новый пост
+                <View style={styles.wrapper}>
+                    <Text style={styles.title}>
+                        Создай новый пост
             </Text>
-            <TextInput style={styles.textArea} placeholder={'Введите текст'} 
-                value={text} onChangeText={setText} multiline/>
-            <PhotoPicker onPick={photoPickHandler}/>
-            <Button title={'Создать пост'} color={THEME.MAIN_COLOR} 
-                onPress={createPostHandler} disabled={!text}/>
-        </View>
+                    <TextInput style={styles.textArea} placeholder={'Введите текст'}
+                        value={text} onChangeText={setText} multiline />
+                    <PhotoPicker onPick={photoPickHandler} />
+                    <View style={styles.button}>
+                        <Button title={'Создать пост'} color={THEME.MAIN_COLOR}
+                            onPress={createPostHandler} disabled={!text} />
+                    </View>
+
+                </View>
             </TouchableWithoutFeedback>
 
         </ScrollView>
@@ -54,5 +57,8 @@ const styles = StyleSheet.create({
     textArea: {
         padding: 10,
         marginBottom: 10
+    },
+    button: {
+        marginTop: 10
     }
 })
