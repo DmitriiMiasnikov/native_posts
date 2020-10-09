@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.dmitriim.native_posts_app",
+      "bundleIdentifier": "com.dmitriim.native-posts-app",
       "buildNumber": "1.0.0"
     },
     "web": {
